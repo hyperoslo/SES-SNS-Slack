@@ -1,0 +1,19 @@
+service: ses-sns-slack
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  region: eu-west-1
+
+functions:
+  notify:
+    handler: handler.notify
+    description: Notifies slack about bounces and complaints
+    events:
+      - sns:
+        topicName: ${file(./serverless.env.yml):SNS_TOPIC}
+    displayName: Bounced and complaint emails
+    environment:
+      SLACK_BOT_TOKEN: ${file(./serverless.env.yml):SLACK_BOT_TOKEN}
+      SLACK_POST_CHANNEL: ${file(./serverless.env.yml):SLACK_POST_CHANNEL}
+      SLACK_BOT_NAME: ${file(./serverless.env.yml):SLACK_BOT_NAME}

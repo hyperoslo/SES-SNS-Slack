@@ -1,0 +1,10 @@
+{
+  "name": "SES SNS Slack",
+  "version": "0.0.1",
+  "description": "Serverless module dependencies",
+  "author": "Sergeev Peter",
+  "license": "MIT",
+  "dependencies": {
+    "slack-client": "^2.0.6"
+  }
+}
