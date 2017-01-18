@@ -9,7 +9,7 @@ module.exports.notify = (event, context, callback) => {
 
   var web = new WebClient(token);
 
-  web.chat.postMessage(channel, JSON.stringify(context), { username: botName }, function(err, res) {
+  web.chat.postMessage(channel, JSON.stringify(event), { username: botName }, function(err, res) {
     const response = {
       statusCode: 200,
       body: JSON.stringify({
