@@ -9,7 +9,26 @@ module.exports.notify = (event, context, callback) => {
 
   var web = new WebClient(token);
 
-  web.chat.postMessage(channel, JSON.stringify(event), { username: botName }, function(err, res) {
+  var payload = event['Records'][0]['Sns'];
+  var parsed_message = JSON.parse(payload['Message']);
+  var message_type = parsed_message['notificationType'];
+
+  var formatters = {
+    'Bounce': 'bounce',
+    'AmazonSnsSubscriptionSucceeded': 'new_subscription',
+  };
+
+  let message_transformer;
+  if ( message_type in formatters) {
+    message_transformer = formatters[message_type];
+  } else {
+    message_transformer = 'default';
+  }
+
+  var message_parts = require(`./transformers/${message_transformer}`).transform(parsed_message);
+  var chat_message = require('./slack_formatter').format(message_parts);
+
+  web.chat.postMessage(channel, chat_message, { username: botName }, function(err, res) {
     const response = {
       statusCode: 200,
       body: JSON.stringify({
