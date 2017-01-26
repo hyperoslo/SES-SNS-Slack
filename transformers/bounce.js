@@ -4,7 +4,7 @@ module.exports.transform = (message) => {
   parts['Type'] = 'bounce';
   parts['Bounce Type'] = message.bounce.bounceType;
   parts['Sender'] = message.mail.source;
-  parts['Restination'] = message.mail.destination.join(', ');
+  parts['Destination'] = message.mail.destination.join(', ');
 
   return parts;
 }
